@@ -6,6 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { CreateUserTaskDto } from '../tasks/dto/create-user-task.dto.js';
 
 @Injectable()
 export class UsersService {
@@ -93,5 +94,64 @@ export class UsersService {
     return {
       message: 'User deleted successfully',
     };
+  }
+
+  // async findUserTasks(userId: number) {
+  //   const user = await this.prisma.user.findUnique({
+  //     where: {
+  //       id: userId,
+  //     },
+  //     include: {
+  //       tasks: {
+  //         orderBy: {
+  //           createdAt: 'desc',
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   if (!user) {
+  //     throw new NotFoundException(`User with id ${userId} not found`);
+  //   }
+
+  //   return user;
+  // }
+
+  async findUserTasks(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        tasks: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+
+    return user;
+  }
+
+  async createUserTask(userId: number, dto: CreateUserTaskDto) {
+    await this.findOne(userId);
+
+    return this.prisma.task.create({
+      data: {
+        title: dto.title,
+        description: dto.description,
+        status: dto.status,
+        priority: dto.priority,
+        userId,
+      },
+    });
   }
 }

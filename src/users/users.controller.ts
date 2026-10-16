@@ -11,6 +11,7 @@ import {
 import { UsersService } from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { CreateUserTaskDto } from '../tasks/dto/create-user-task.dto.js';
 
 @Controller('users')
 export class UsersController {
@@ -42,5 +43,18 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
+  }
+
+  @Get(':id/tasks')
+  findUserTasks(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findUserTasks(id);
+  }
+
+  @Post(':id/tasks')
+  createUserTask(
+    @Param('id', ParseIntPipe) userId: number,
+    @Body() dto: CreateUserTaskDto,
+  ) {
+    return this.usersService.createUserTask(userId, dto);
   }
 }
