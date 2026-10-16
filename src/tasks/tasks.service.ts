@@ -127,13 +127,13 @@ export class TasksService {
       where.OR = [
         {
           title: {
-            contain: search,
+            contains: search,
             mode: 'insensitive',
           },
         },
         {
           description: {
-            contain: search,
+            contains: search,
             mode: 'insensitive',
           },
         },
