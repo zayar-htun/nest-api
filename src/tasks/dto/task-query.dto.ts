@@ -9,21 +9,9 @@ import {
   Min,
 } from 'class-validator';
 import { TaskPriorityDto, TaskStatusDto } from './create-tasks.dto.js';
+import { PaginationQuery } from '../../common/dto/pagination-query.dto.js';
 
-export class TaskQueryDto {
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  @Type(() => Number)
-  page: number = 1;
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  @Min(1)
-  @Max(100)
-  limit: number = 2;
-
+export class TaskQueryDto extends PaginationQuery {
   @IsOptional()
   @IsString()
   search?: string;
