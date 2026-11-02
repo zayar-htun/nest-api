@@ -35,6 +35,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RequestLoggerMiddleware).forRoutes('users');
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
   }
 }

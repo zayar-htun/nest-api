@@ -34,6 +34,15 @@ export class UsersService {
 
   async findAll() {
     return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        age: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       orderBy: {
         id: 'desc',
       },
@@ -42,8 +51,15 @@ export class UsersService {
 
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({
-      where: {
-        id,
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        age: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
@@ -78,6 +94,15 @@ export class UsersService {
           email: updateUserDto.email,
           age: updateUserDto.age,
         },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          age: true,
+          role: true,
+          createdAt: true,
+          updatedAt: true,
+        },
       });
     }
   }
@@ -88,6 +113,9 @@ export class UsersService {
     await this.prisma.user.delete({
       where: {
         id,
+      },
+      select: {
+        id: true,
       },
     });
 
